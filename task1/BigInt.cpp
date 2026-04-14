@@ -1,26 +1,48 @@
+#include "BigInt.h"
 #include <iostream>
-#include "long_arithmetic.h"
+#include <algorithm>
 #include <vector>
 
-std::vector<int> add_long_numbers(const std::vector<int>& a, const std::vector<int>& b) {
-    std::vector<int> result;
-    int carry = 0;
-    int i = a.size() - 1;
-    int j = b.size() - 1;
-
-    while (i >= 0 || j >= 0 || carry > 0) {
-        int sum = carry;
-        if (i >= 0) sum += a[i--];
-        if (j >= 0) sum += b[j--];
-        result.insert(result.begin(), sum % 10);
-        carry = sum / 10;
+// Конструктор: аргумент long long, как в .h
+BigInt::BigInt(long long n) {
+    digits.clear();
+    if (n == 0) digits.push_back(0);
+    while (n > 0) {
+        digits.push_back(n % 10);
+        n /= 10;
     }
-    return result;
 }
 
-void print_long_number(const std::vector<int>& num) {
-    for (int digit : num) {
-        std::cout << digit;
+// Метод печати: принадлежит классу
+void BigInt::print() const {
+    if (digits.empty()) {
+        std::cout << 0;
+    } else {
+        for (int i = (int)digits.size() - 1; i >= 0; i--) {
+            std::cout << digits[i];
+        }
     }
     std::cout << std::endl;
 }
+
+// Оператор сложения: принадлежит классу
+BigInt BigInt::operator+(const BigInt& other) const {
+    BigInt res;
+    res.digits.clear();
+    int carry = 0;
+    size_t n = std::max(digits.size(), other.digits.size());
+    
+    for (size_t i = 0; i < n || carry; i++) {
+        int d1 = i < digits.size() ? digits[i] : 0;
+        int d2 = i < other.digits.size() ? other.digits[i] : 0;
+        int sum = d1 + d2 + carry;
+        res.digits.push_back(sum % 10);
+        carry = sum / 10;
+    }
+    return res;
+}
+
+// Заглушки для остальных операторов, чтобы не было ошибок линковки
+BigInt BigInt::operator-(const BigInt& other) const { return *this; }
+BigInt BigInt::operator*(int n) const { return *this; }
+BigInt BigInt::powerOfTwo(int n) { return BigInt(0); }
