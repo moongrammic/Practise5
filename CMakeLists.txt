@@ -1,15 +1,20 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 project(Practise5)
 
-# Задание 1
 set(TASK1_SRC 
     task1/main.cpp 
     task1/BigInt.cpp
 )
 add_executable(Task1 ${TASK1_SRC})
 
-# Задание 2
-add_executable(Task2 task2/main.cpp)
+set(TASK2_SRC 
+    task2/main.cpp
+    task2/logic.cpp
+)   
+add_executable(Task2 ${TASK2_SRC}) 
 
-# Задание 3
-add_executable(Task3 task3/main.cpp)
+set(TASK3_SRC 
+    task3/main.cpp
+    task3/logic.cpp
+)
+add_executable(Task3 ${TASK3_SRC})
